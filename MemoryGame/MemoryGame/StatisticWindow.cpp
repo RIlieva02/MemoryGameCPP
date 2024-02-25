@@ -58,7 +58,7 @@ bool StatisticWindow::ttf_init(){
     if (TTF_Init() == -1){
         return false;
     }
-    // шрифт за името на играта
+    // шрифт за тестовете на екрана
     TTF_Font* font = TTF_OpenFont("/Users/ralitsatoneva/Documents/MemoryGame/Fonts/Arcade.ttf", 40);
     // проверка
     if (font == NULL){
@@ -66,24 +66,41 @@ bool StatisticWindow::ttf_init(){
     }
     
     // деклариране и инициализация на текстовете
-    SDL_Surface* gameName = NULL;
+    SDL_Surface* gameName = NULL; // име на играта
     SDL_Surface* time = NULL;// време
+    SDL_Surface* movesTxt = NULL; // текст ходове
     SDL_Surface* moves = NULL; // ходове
+    SDL_Surface* mistakesTxt = NULL; // текст грешки
     SDL_Surface* mistakes = NULL; // грешки
     SDL_Surface* closeButton = NULL; // име на старт бутона
    
+    // тест за името на играта
     gameName = TTF_RenderText_Blended(font, "MEMORY GAME", {0, 0, 0, 0});
     gameNameText = SDL_CreateTextureFromSurface(renderer, gameName);
     
+    // тест за таймера
     time = TTF_RenderText_Blended(font, "TIME: ", {0, 0, 0, 0});
     timeText = SDL_CreateTextureFromSurface(renderer, time);
     
-    moves = TTF_RenderText_Blended(font, "MOVES: ", {0, 0, 0, 0});
-    movesText = SDL_CreateTextureFromSurface(renderer, moves);
+    // текста за брояча на ходове
+    movesTxt = TTF_RenderText_Blended(font, "MOVES: ", {0, 0, 0, 0});
+    movesText = SDL_CreateTextureFromSurface(renderer, movesTxt);
     
-    mistakes = TTF_RenderText_Blended(font, "MISTAKES: ", {0, 0, 0, 0});
-    mistakesText = SDL_CreateTextureFromSurface(renderer, mistakes);
+    // брояч на ходове
+    std::string movesIntToString = intToString(this->moves);
+    moves = TTF_RenderText_Blended(font, movesIntToString.c_str(), {0, 0, 0, 0});
+    movesInt = SDL_CreateTextureFromSurface(renderer, moves);
     
+    // текста за брояза на грешки
+    mistakesTxt = TTF_RenderText_Blended(font, "MISTAKES: ", {0, 0, 0, 0});
+    mistakesText = SDL_CreateTextureFromSurface(renderer, mistakesTxt);
+    
+    // брояч на грешки
+    std::string mistakesIntToString= intToString(this->mistakes);
+    mistakes = TTF_RenderText_Blended(font, mistakesIntToString.c_str(), {0, 0, 0, 0});
+    mistakesInt = SDL_CreateTextureFromSurface(renderer, mistakes);
+    
+    // тест за затварящия бутон
     closeButton = TTF_RenderText_Blended(font, "CLOSE", {0, 0, 0, 0});
     closeButtonNameText = SDL_CreateTextureFromSurface(renderer, closeButton);
 
@@ -92,26 +109,37 @@ bool StatisticWindow::ttf_init(){
     SDL_GetWindowSize(window, &ww, &wh);
 
     int tw, th;
+    // позиция за текста на името на играта
     SDL_QueryTexture(gameNameText, 0, 0, &tw, &th);
     gameNameRect = { (ww / 2 - tw / 2), (wh / 6 - th / 2), tw, th };
     
+    // позиция за текста на таймера
     SDL_QueryTexture(timeText, 0, 0, &tw, &th);
     timeRect = { (ww / 4 - 10 - tw / 2), ((wh / 2) - (wh / 4) / 2 - th / 2), tw, th };
     
+    // позиция на текста за ходовете
     SDL_QueryTexture(movesText, 0, 0, &tw, &th);
-    movesRect = { (ww / 4 - tw / 2), (wh / 2 - th / 2), tw, th };
+    movesTextRect = { (ww / 4 - tw / 2), (wh / 2 - th / 2), tw, th };
     
+    // позицията на брояча за ходове
+    SDL_QueryTexture(movesInt, 0, 0, &tw, &th);
+    movesIntRect = { ((ww / 2) + (ww / 4) - (tw / 2)), (wh / 2 - th / 2), tw, th };
+    
+    // позицията на тескта за грешки
     SDL_QueryTexture(mistakesText, 0, 0, &tw, &th);
-    mistakesRect = { (ww / 3 - tw / 2), ((wh / 2) + (wh / 4) / 2 - th / 2), tw, th };
+    mistakesTextRect = { (ww / 3 - tw / 2), ((wh / 2) + (wh / 4) / 2 - th / 2), tw, th };
     
+    // позицията на брояча на грешки
+    SDL_QueryTexture(mistakesInt, 0, 0, &tw, &th);
+    mistakesIntRect = { ((ww / 2) + (ww / 4) - (tw / 2)), ((wh / 2) + (wh / 4) / 2 - th / 2), tw, th };
+    
+    // позицията на бутона за затваряне
     SDL_QueryTexture(closeButtonNameText, 0, 0, &tw, &th);
     closeButtonNameRect = { (ww / 2 - 200 / 2) + (200 - tw) / 2,
                     ((wh / 2) + (wh / 4) + (wh / 4) / 2 - 200 / 2) + (200 - th) / 2,
                     tw, th };
 
-    //std::string playerMoves = static_cast<std::string>(std::to_string(moves));
-
-    
+    // изчистване
     SDL_FreeSurface(gameName);
     SDL_FreeSurface(time);
     SDL_FreeSurface(moves);
@@ -133,10 +161,14 @@ void StatisticWindow::render() {
     SDL_RenderCopy(renderer, timeText, NULL, &timeRect);
    
     // показване на ходовете
-    SDL_RenderCopy(renderer, movesText, NULL, &movesRect);
+    SDL_RenderCopy(renderer, movesText, NULL, &movesTextRect);
+    
+    SDL_RenderCopy(renderer, movesInt, NULL, &movesIntRect);
     
     // показване на грешките
-    SDL_RenderCopy(renderer, mistakesText, NULL, &mistakesRect);
+    SDL_RenderCopy(renderer, mistakesText, NULL, &mistakesTextRect);
+    
+    SDL_RenderCopy(renderer, mistakesInt, NULL, &mistakesIntRect);
     
     // показване на старт бутона
     SDL_RenderCopy(renderer, buttonClose, NULL, &buttonCloseRect);
@@ -144,6 +176,12 @@ void StatisticWindow::render() {
     SDL_RenderCopy(renderer, closeButtonNameText, NULL, &closeButtonNameRect);
     
     SDL_RenderPresent(renderer);
+}
+
+std::string StatisticWindow::intToString(int number) {
+    std::stringstream ss;
+    ss << number;
+    return ss.str();
 }
 
 bool StatisticWindow::isClickableTextureClicked(SDL_Texture* t, SDL_Rect* r, int xDown, int yDown){
@@ -173,10 +211,6 @@ void StatisticWindow::handleEvents() {
             default: break;
         }
     }
-}
-
-void StatisticWindow::update() {
-
 }
 
 void StatisticWindow::clean() {

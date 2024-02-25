@@ -7,7 +7,7 @@
 
 #include "Card.hpp"
 
-Card::Card(std::string id, SDL_Texture* image) : id(id), image(image), hidden(true) { }
+Card::Card(std::string id, SDL_Texture* image) : id(id), image(image), hidden(true), click(false) { }
 
 void Card::setId(std::string id){
     this->id = id;
@@ -46,4 +46,11 @@ void Card::reveal() {
 }
 bool Card::isHidden() const {
     return hidden;
+}
+
+void Card::clicked(){
+    click = true;
+}
+bool Card::isClicked() const{
+    return click;
 }

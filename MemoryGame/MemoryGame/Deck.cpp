@@ -231,3 +231,55 @@ void Deck::printBackCards(){
     }
     
 }
+
+void Deck::printHintDeck(){
+    int xCordinates = 5;
+    int yCordinates = 5;
+    int wCordinates = 100;
+    int hCordinates = 100;
+    int count = 0;
+    
+    if (playingDeckOfCards.size() == 16){ // 4 x 4
+        for (auto it = playingDeckOfCards.begin(); it != playingDeckOfCards.end(); ++it) {
+            it->setRect(xCordinates, yCordinates, wCordinates, hCordinates);
+            if(it->isClicked() == true){
+                it->drawCard(it->getRect().x, it->getRect().y, it->getRect().w, it->getRect().h, renderer);
+            }
+            count++;
+            xCordinates += 105;
+            if (count == 4 || count == 8 || count == 12){
+                yCordinates += 105;
+                xCordinates = 5;
+            }
+        }
+    }
+    if (playingDeckOfCards.size() == 36){ // 6 x 6
+        for (auto it = playingDeckOfCards.begin(); it != playingDeckOfCards.end(); ++it) {
+            it->setRect(xCordinates, yCordinates, wCordinates, hCordinates);
+            if(it->isClicked() == true){
+                it->drawCard(it->getRect().x, it->getRect().y, it->getRect().w, it->getRect().h, renderer);
+            }
+            count++;
+            xCordinates += 105;
+            if (count == 6 || count == 12 || count == 18 || count == 24 || count == 30){
+                yCordinates += 105;
+                xCordinates = 5;
+            }
+        }
+    }
+    if (playingDeckOfCards.size() == 64){ // 8 x 8
+        for (auto it = playingDeckOfCards.begin(); it != playingDeckOfCards.end(); ++it) {
+            it->setRect(xCordinates, yCordinates, wCordinates, hCordinates);
+            if (it->isClicked() == true){
+                it->drawCard(it->getRect().x, it->getRect().y, it->getRect().w, it->getRect().h, renderer);
+            }
+            count++;
+            xCordinates += 105;
+
+            if (count == 8 || count == 16 || count == 24 || count == 32 || count == 40 || count == 48 || count == 56){
+                yCordinates += 105;
+                xCordinates = 5;
+            }
+        }
+    }
+}

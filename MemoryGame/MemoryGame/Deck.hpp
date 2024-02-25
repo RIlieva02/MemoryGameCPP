@@ -32,7 +32,8 @@ public:
     void startGame(int); // принтене на картите
     void shuffleDeck(); // размешване
     void printDeck(); // принтиране на тестето
-    void printBackCards();
+    void printBackCards(); // принтиране задната страна на картите
+    void printHintDeck(); // принтираме жокер тестето
     
 private:
     SDL_Renderer* renderer = NULL;

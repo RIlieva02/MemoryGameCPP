@@ -10,6 +10,7 @@
 
 #include <stdio.h>
 #include <string>
+#include <sstream>
 #include <iostream>
 #include <SDL2/SDL.h>
 #include <SDL2_image/SDL_image.h>
@@ -22,11 +23,11 @@ public:
     bool init(const char* title, int xpos, int ypos, int width, int height, int flags);
     bool ttf_init();
     void render();
-    void update();
     void handleEvents();
     void clean();
     bool isRunning();
     bool isClickableTextureClicked(SDL_Texture* t, SDL_Rect* r, int xDown, int yDown);
+    std::string intToString(int);
     
 private:
     SDL_Window* window = NULL;
@@ -42,7 +43,10 @@ private:
     SDL_Rect timeRect; // координати за текста на времето
     
     SDL_Texture *movesText, *mistakesText; // текст за брой ходове и грешки
-    SDL_Rect movesRect, mistakesRect; // координати на текста за брой ходове и грешки
+    SDL_Rect movesTextRect, mistakesTextRect; // координати на текста за брой ходове и грешки
+    
+    SDL_Texture *movesInt, *mistakesInt; // int за брой ходове и грешки
+    SDL_Rect movesIntRect, mistakesIntRect; // координати за int брой ходове и грешки
     
     SDL_Texture* buttonClose; // бутон затвори
     SDL_Rect buttonCloseRect; // координати на бутоните

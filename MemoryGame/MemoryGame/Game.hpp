@@ -22,7 +22,6 @@ public:
     bool init(const char* title, int xpos, int ypos, int width, int height, int flags);
     bool ttf_init();
     void render();
-    void update();
     void handleEvents();
     void clean();
     bool isRunning();
@@ -40,6 +39,7 @@ private:
     bool openTwoPictures; // проверка дали са отворени два бутона
     bool gameOver; // проверка дали е приключила играта
     bool onTime; // дали е спазено времето за игра
+    bool hint; // проверява дали е кликнат бутона за жокер
     
     SDL_Texture *gameNameText, *playerNameText; // текст за началото на играта
     SDL_Rect gameNameRect, playerNameRect; // координати за текста
@@ -49,8 +49,6 @@ private:
     
     SDL_Texture *resultWinText, *resultLoseText; // текст за победа или загуба
     SDL_Rect resultWinRect, resultLoseRect; // координати на текст за победа или загуба
-    
-    int mouseDownX, mouseDownY; // координати на мишката
     
     std::string playerName; // съхранява името на играча
     

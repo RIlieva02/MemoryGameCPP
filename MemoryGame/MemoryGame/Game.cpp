@@ -43,6 +43,8 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, in
                 SDL_RWops* start = SDL_RWFromFile("/Users/ralitsatoneva/Documents/MemoryGame/Background/button.png", "rb");
                 buttonStart = IMG_LoadTexture_RW(renderer, start, 1);
 
+                int tw, th;
+                SDL_QueryTexture(buttonStart, 0, 0, &tw, &th);
                 SDL_QueryTexture(buttonStart, NULL, NULL, &buttonStartRect.w, &buttonStartRect.h);
                 buttonStartRect.x = (ww / 2 - 200 / 2);
                 buttonStartRect.y = ((wh / 2) + (wh / 4) - 200 / 2);
@@ -82,6 +84,8 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, in
                 buttonStatisticRect.w = 300;
                 buttonStatisticRect.h = 200;
                 
+                // проверка дали е кликнат бутона жокер
+                hint = false;
                 // проверка дали е приключила играта
                 gameOver = false;
                 // проверка дали е спазено времето за игра
@@ -235,6 +239,10 @@ void Game::render() {
             // показване на текст "жокер"
             SDL_RenderCopy(renderer, hintButtonNameText, NULL, &hintButtonNameRect);
             
+            if (hint){
+                playingCards->printHintDeck();
+            }
+            
             // бутон за статистика
             SDL_RenderCopy(renderer, buttonStatistic, NULL, &buttonStatisticRect);
             // показване на текст "статистика"
@@ -281,12 +289,10 @@ void Game::handleEvents() {
                 int msx, msy;
                 if (event.button.button == SDL_BUTTON_LEFT) {
                     SDL_GetMouseState(&msx, &msy);
-                    mouseDownX = msx;
-                    mouseDownY = msy;
                     
                     if (startButtonClicked == false){ // проверка дали е кликнат старт бутона
                         
-                        if (isClickableTextureClicked(buttonStart, &buttonStartRect, mouseDownX, mouseDownY)) {
+                        if (isClickableTextureClicked(buttonStart, &buttonStartRect, msx, msy)) {
                             
                             std::cout << "CLICKED" << std::endl;
                             
@@ -311,8 +317,9 @@ void Game::handleEvents() {
                             for (auto it = playingCards->getPlayingDeckOfCards().begin();
                                  it != playingCards->getPlayingDeckOfCards().end(); ++it){
                                 if (isClickableTextureClicked(it->getTexture(), &it->getRect(), msx, msy)){
-                                    it->reveal();
-                                
+                                    it->reveal(); // откриваме картата
+                                    it->clicked(); // кликваме върху нея
+                                    
                                     if (firstRevealedCard != nullptr){
                                         secondRevealedCard = &(*it);
                                         openTwoPictures = true;
@@ -325,14 +332,15 @@ void Game::handleEvents() {
                             }
                             
                             // проверка дали е кликнат бутонът жокер
-                            if (isClickableTextureClicked(buttonHint, &buttonHintRect, mouseDownX, mouseDownY)) {
-                                std::cout << "CLICKED" << std::endl;
-                                //hintCards->printDeck();
+                            if (isClickableTextureClicked(buttonHint, &buttonHintRect, msx, msy)) {
+                                std::cout << "HINT CLICKED" << std::endl;
+                                hint = true;
+                                playingCards->printHintDeck();
                             }
                             
                             // проверка дали е кликнат бутонът за статистика
-                            if (isClickableTextureClicked(buttonStatistic, &buttonStatisticRect, mouseDownX, mouseDownY)) {
-                                std::cout << "CLICKED" << std::endl;
+                            if (isClickableTextureClicked(buttonStatistic, &buttonStatisticRect, msx, msy)) {
+                                std::cout << "STATISTIC CLICKED" << std::endl;
                                 
                                 // създаваме нов прозорец
                                 StatisticWindow* statistic = NULL;
@@ -347,7 +355,6 @@ void Game::handleEvents() {
                                 statistic->ttf_init();
                                 do{
                                     statistic->render();
-                                    statistic->update();
                                     statistic->handleEvents();
                                 }while (statistic->isRunning());
                                     
@@ -376,6 +383,10 @@ void Game::handleEvents() {
                         } else {
                             SDL_Delay(500); // забавяне при скриването на картите с 0.5 секунди
                             // картите са различни
+                            
+                            moves++; // + 1 ход
+                            mistakes++; // + 1 грешка
+                            
                             firstRevealedCard->hide(); // скриваме първата карта
                             secondRevealedCard->hide(); // скриваме втората карта
 
@@ -383,9 +394,12 @@ void Game::handleEvents() {
                             secondRevealedCard = nullptr;
                             openTwoPictures = false;
                             
-                            moves++; // + 1 ход
-                            mistakes++; // + 1 грешка
+                           
                         }
+                    }
+                    if (isClickableTextureClicked(buttonHint, &buttonHintRect, msx, msy)) {
+                        std::cout << "HINT NOT CLICKED" << std::endl;
+                        hint = false;
                     }
                 }
             }; break;
@@ -412,11 +426,6 @@ void Game::isGameOver(){
     }
     
 }
-
-void Game::update() {
-
-}
-
 
 void Game::clean() {
     std::cout << "cleaning game\n";
