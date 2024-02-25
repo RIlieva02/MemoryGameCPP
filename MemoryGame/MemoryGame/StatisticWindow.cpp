@@ -34,6 +34,7 @@ bool StatisticWindow::init(const char* title, int xpos, int ypos, int width, int
                 buttonCloseRect.y = ((wh / 2) + (wh / 4) + (wh / 4) / 2 - 200 / 2);
                 buttonCloseRect.w = 200;
                 buttonCloseRect.h = 200;
+                
             }
             else {
                 std::cout << "renderer init failed\n";
@@ -67,6 +68,7 @@ bool StatisticWindow::ttf_init(){
     
     // деклариране и инициализация на текстовете
     SDL_Surface* gameName = NULL; // име на играта
+    SDL_Surface* timeTxt = NULL;// текс за време
     SDL_Surface* time = NULL;// време
     SDL_Surface* movesTxt = NULL; // текст ходове
     SDL_Surface* moves = NULL; // ходове
@@ -78,9 +80,14 @@ bool StatisticWindow::ttf_init(){
     gameName = TTF_RenderText_Blended(font, "MEMORY GAME", {0, 0, 0, 0});
     gameNameText = SDL_CreateTextureFromSurface(renderer, gameName);
     
-    // тест за таймера
-    time = TTF_RenderText_Blended(font, "TIME: ", {0, 0, 0, 0});
-    timeText = SDL_CreateTextureFromSurface(renderer, time);
+    // текст за таймера
+    timeTxt = TTF_RenderText_Blended(font, "TIME: ", {0, 0, 0, 0});
+    timeText = SDL_CreateTextureFromSurface(renderer, timeTxt);
+    
+    // време
+    std::string timeIntToString = intToString(this->getOneMinTime()) + " : " + intToString(this->getOneSecTime()) ;
+    time = TTF_RenderText_Blended(font, timeIntToString.c_str(), {0, 0, 0, 0});
+    timeInt = SDL_CreateTextureFromSurface(renderer, time);
     
     // текста за брояча на ходове
     movesTxt = TTF_RenderText_Blended(font, "MOVES: ", {0, 0, 0, 0});
@@ -96,7 +103,7 @@ bool StatisticWindow::ttf_init(){
     mistakesText = SDL_CreateTextureFromSurface(renderer, mistakesTxt);
     
     // брояч на грешки
-    std::string mistakesIntToString= intToString(this->mistakes);
+    std::string mistakesIntToString = intToString(this->mistakes);
     mistakes = TTF_RenderText_Blended(font, mistakesIntToString.c_str(), {0, 0, 0, 0});
     mistakesInt = SDL_CreateTextureFromSurface(renderer, mistakes);
     
@@ -115,7 +122,10 @@ bool StatisticWindow::ttf_init(){
     
     // позиция за текста на таймера
     SDL_QueryTexture(timeText, 0, 0, &tw, &th);
-    timeRect = { (ww / 4 - 10 - tw / 2), ((wh / 2) - (wh / 4) / 2 - th / 2), tw, th };
+    timeTextRect = { (ww / 4 - 10 - tw / 2), ((wh / 2) - (wh / 4) / 2 - th / 2), tw, th };
+    
+    SDL_QueryTexture(timeInt, 0, 0, &tw, &th);
+    timeIntRect = { ((ww / 2) + (ww / 4) - (tw / 2)), ((wh / 2) - (wh / 4) / 2 - th / 2), tw, th };
     
     // позиция на текста за ходовете
     SDL_QueryTexture(movesText, 0, 0, &tw, &th);
@@ -141,7 +151,7 @@ bool StatisticWindow::ttf_init(){
 
     // изчистване
     SDL_FreeSurface(gameName);
-    SDL_FreeSurface(time);
+    SDL_FreeSurface(timeTxt);
     SDL_FreeSurface(moves);
     SDL_FreeSurface(mistakes);
     SDL_FreeSurface(closeButton);
@@ -158,16 +168,21 @@ void StatisticWindow::render() {
     SDL_RenderCopy(renderer, gameNameText, NULL, &gameNameRect);
     
     // показване на времето
-    SDL_RenderCopy(renderer, timeText, NULL, &timeRect);
+    SDL_RenderCopy(renderer, timeText, NULL, &timeTextRect);
+    
+    // времето
+    SDL_RenderCopy(renderer, timeInt, NULL, &timeIntRect);
    
     // показване на ходовете
     SDL_RenderCopy(renderer, movesText, NULL, &movesTextRect);
     
+    // ходовете
     SDL_RenderCopy(renderer, movesInt, NULL, &movesIntRect);
     
     // показване на грешките
     SDL_RenderCopy(renderer, mistakesText, NULL, &mistakesTextRect);
     
+    //  грешките
     SDL_RenderCopy(renderer, mistakesInt, NULL, &mistakesIntRect);
     
     // показване на старт бутона
@@ -176,6 +191,25 @@ void StatisticWindow::render() {
     SDL_RenderCopy(renderer, closeButtonNameText, NULL, &closeButtonNameRect);
     
     SDL_RenderPresent(renderer);
+}
+
+// Таймер
+
+int StatisticWindow::getOneSecTime(){
+    sec = time;
+    
+    if (sec > 60){
+        sec %= 60; // взимаме остатъка
+    }
+    std::cout << sec << std::endl;
+    return sec;
+}
+int StatisticWindow::getOneMinTime(){
+    if(time > 60){
+        min = time / 60;
+    }
+    std::cout << min << " : ";
+    return min;
 }
 
 std::string StatisticWindow::intToString(int number) {
@@ -225,10 +259,13 @@ bool StatisticWindow::isRunning() {
     return StatisticWindow::running;
 }
 
-StatisticWindow::StatisticWindow(int moves, int mistake): moves(moves), mistakes(mistake){
+StatisticWindow::StatisticWindow(float time, int moves, int mistake): time(time), moves(moves), mistakes(mistake){
+                                    
     StatisticWindow::window = NULL;
     StatisticWindow::renderer = NULL;
     StatisticWindow::running = true;
+    StatisticWindow::sec = 0; // секунди
+    StatisticWindow::min = 0; // минути
 }
 
 StatisticWindow::~StatisticWindow() {

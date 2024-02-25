@@ -25,8 +25,16 @@ public:
     void handleEvents();
     void clean();
     bool isRunning();
+    
+    // проверяваме дали текстурата е кликната
     bool isClickableTextureClicked(SDL_Texture* t, SDL_Rect* r, int xDown, int yDown);
+    
+    // проверява дали играта е приключила
     void isGameOver();
+    
+    // сетваме таймера
+    void setTime(float);
+    float getTime();
     
 private:
     SDL_Window* window = NULL;
@@ -40,9 +48,6 @@ private:
     bool gameOver; // проверка дали е приключила играта
     bool onTime; // дали е спазено времето за игра
     bool hint; // проверява дали е кликнат бутона за жокер
-    bool renderText;
-    bool textInput = false;
-
     
     SDL_Texture *gameNameText; // текст за началото на играта
     SDL_Rect gameNameRect; // координати за текста
@@ -73,6 +78,9 @@ private:
     Card* secondRevealedCard; // запазваме информация за втората обърната карта
     
     int moves, mistakes; //ходове и грешки
+    
+    // Таймер
+    float time; // изминалото време в секунди
 
 };
 #endif /* Game_hpp */

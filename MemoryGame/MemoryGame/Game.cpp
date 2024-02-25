@@ -249,6 +249,7 @@ void Game::render() {
         SDL_RenderCopy(renderer, buttonStart, NULL, &buttonStartRect);
         // показване на текст "старт"
         SDL_RenderCopy(renderer, startButtonNameText, NULL, &startButtonNameRect);
+        
     
     } else{ // сцена 2
       
@@ -376,7 +377,7 @@ void Game::handleEvents() {
                                 StatisticWindow* statistic = NULL;
                                 const int WINDOW_WIDTH = 400;
                                 const int WINDOW_HEIGHT = 400;
-                                statistic = new StatisticWindow(moves, mistakes);
+                                statistic = new StatisticWindow(getTime(), moves, mistakes);
                                 statistic->init("STATISTIC",
                                     SDL_WINDOWPOS_CENTERED,
                                     SDL_WINDOWPOS_CENTERED,
@@ -433,15 +434,16 @@ void Game::handleEvents() {
                     }
                 }
             }; break;
-            case SDL_TEXTINPUT: {
+            case SDL_TEXTINPUT: { // въвеждане от клавиатурата
                 if (!startButtonClicked) { // Проверка дали екранът е сцена 1
-                    // Проверка дали въведеният текст се съдържа в позволените символи за име (например, само букви, цифри и интервали)
+                    
+                    //  използваме само букви, цифри и интервали
                     if ((event.text.text[0] >= 'a' && event.text.text[0] <= 'z') ||
                         (event.text.text[0] >= 'A' && event.text.text[0] <= 'Z') ||
                         (event.text.text[0] >= '0' && event.text.text[0] <= '9') ||
                         (event.text.text[0] == ' ')) {
                         
-                        // Добавяне на въведения символ към името
+                        // добавяме въведения символ към името
                         playerName += event.text.text[0];
                         ttf_init(); // извикваме, за да създаде големината, шрифта и координатите на текста
                     }
@@ -453,6 +455,15 @@ void Game::handleEvents() {
         }
     }
 }
+
+// сетване на времето
+void Game::setTime(float time){
+    this->time = time;
+}
+float Game::getTime(){
+    return time;
+}
+
 
 // приключва играта ако са отворени всички карти
 void Game::isGameOver(){
@@ -472,6 +483,7 @@ void Game::isGameOver(){
     
 }
 
+// изчистваме SDL
 void Game::clean() {
     std::cout << "cleaning game\n";
     SDL_DestroyTexture(gameNameText);
@@ -499,11 +511,16 @@ Game::Game() : firstRevealedCard(nullptr), secondRevealedCard(nullptr) {
     Game::window = NULL;
     Game::renderer = NULL;
     Game::running = true;
+    
     Game::moves = 0; // ходове
     Game::mistakes = 0; // грешки
+    
+    Game::time = 0; // изминало време от началото на играта в секунди
 }
 
 Game::~Game() {
     clean();
+   
+    delete playingCards;
 }
 
