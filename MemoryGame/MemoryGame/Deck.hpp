@@ -23,12 +23,13 @@ public:
     std::vector<Card>& getPlayingDeckOfCards();
     void setBackCards(std::vector<Card>);
     std::vector<Card>& getBackCards();
-    
+
     int generateRandomNumber();
     void startGame(int); // принтене на картите
     void shuffleDeck(); // размешване
     void printDeck(); // принтиране на тестето
     void printBackCards(); // принтиране задната страна на картите
+    void printHintDeck(); // принтираме жокер тестето
     
     void clean();
     
