@@ -98,33 +98,14 @@ std::vector<Card>& Deck::getBackCards(){
     return this->deckOfCards;
 }
 
-void Deck::hideCard(int index) {
-    if (index >= 0 && index < deckOfCards.size()) {
-        deckOfCards[index].hide();
-    }
-}
-
-void Deck::revealCard(int index) {
-    if (index >= 0 && index < deckOfCards.size()) {
-        deckOfCards[index].reveal();
-    }
-}
-
-bool Deck::isCardHidden(int index) const {
-    if (index >= 0 && index < deckOfCards.size()) {
-        return deckOfCards[index].isHidden();
-    }
-    return false; // Връщаме false за невалиден индекс или ако картата не е скрита
-}
-
 int Deck::generateRandomNumber() {
     int randomIndex;
-    srand(time(nullptr));
+    //srand(time(nullptr));
 
-        // Генериране на произволно число от 0 до 2
+    // Генериране на произволно число от 0 до 2
     int rNumber = rand() % 3;
 
-        // Избор на вариант в зависимост от произволното число
+    // Избор на вариант в зависимост от произволното число
     switch(rNumber) {
         case 0:
             randomIndex = 16;
@@ -250,4 +231,3 @@ void Deck::printBackCards(){
     }
     
 }
-

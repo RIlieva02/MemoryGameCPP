@@ -30,9 +30,6 @@ SDL_Rect& Card::getRect(){
 }
 
 void Card::drawCard(int x, int y, int width, int height, SDL_Renderer* ren){
-    
-//    SDL_Rect srcRect;
-//    rect = srcRect;
     rect.x = x;
     rect.y = y;
     rect.w = width;
@@ -50,4 +47,3 @@ void Card::reveal() {
 bool Card::isHidden() const {
     return hidden;
 }
-
