@@ -52,6 +52,50 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, in
                 buttonStartRect.w = 200;
                 buttonStartRect.h = 200;
                 
+                // бутон за 1 мин
+                SDL_RWops* timeOne = SDL_RWFromFile("/Users/ralitsatoneva/Documents/MemoryGame/Background/button.png", "rb");
+                buttonTimeOne = IMG_LoadTexture_RW(renderer, timeOne, 1);
+
+                SDL_QueryTexture(buttonTimeOne, 0, 0, &tw, &th);
+                SDL_QueryTexture(buttonTimeOne, NULL, NULL, &buttonTimeOneRect.w, &buttonTimeOneRect.h);
+                buttonTimeOneRect.x = (ww / 2 - 200 / 2);
+                buttonTimeOneRect.y = ((wh / 9) * 2 - 200 / 2);
+                buttonTimeOneRect.w = 200;
+                buttonTimeOneRect.h = 200;
+                
+                // бутон за 2:30 минути
+                SDL_RWops* timeTwo = SDL_RWFromFile("/Users/ralitsatoneva/Documents/MemoryGame/Background/button.png", "rb");
+                buttonTimeTwo = IMG_LoadTexture_RW(renderer, timeTwo, 1);
+
+                SDL_QueryTexture(buttonTimeTwo, 0, 0, &tw, &th);
+                SDL_QueryTexture(buttonTimeTwo, NULL, NULL, &buttonTimeTwoRect.w, &buttonTimeTwoRect.h);
+                buttonTimeTwoRect.x = (ww / 2 - 200 / 2);
+                buttonTimeTwoRect.y = ((wh / 9) * 4 - 200 / 2);
+                buttonTimeTwoRect.w = 200;
+                buttonTimeTwoRect.h = 200;
+                
+                // бутон за 5 минути
+                SDL_RWops* timeFive = SDL_RWFromFile("/Users/ralitsatoneva/Documents/MemoryGame/Background/button.png", "rb");
+                buttonTimeFive = IMG_LoadTexture_RW(renderer, timeFive, 1);
+
+                SDL_QueryTexture(buttonTimeFive, 0, 0, &tw, &th);
+                SDL_QueryTexture(buttonTimeFive, NULL, NULL, &buttonTimeFiveRect.w, &buttonTimeFiveRect.h);
+                buttonTimeFiveRect.x = (ww / 2 - 200 / 2);
+                buttonTimeFiveRect.y = ((wh / 9) * 6 - 200 / 2);
+                buttonTimeFiveRect.w = 200;
+                buttonTimeFiveRect.h = 200;
+                
+                // бутон за неограничено време
+                SDL_RWops* noTime = SDL_RWFromFile("/Users/ralitsatoneva/Documents/MemoryGame/Background/button.png", "rb");
+                buttonNoTime = IMG_LoadTexture_RW(renderer, noTime, 1);
+
+                SDL_QueryTexture(buttonNoTime, 0, 0, &tw, &th);
+                SDL_QueryTexture(buttonNoTime, NULL, NULL, &buttonNoTimeRect.w, &buttonNoTimeRect.h);
+                buttonNoTimeRect.x = (ww / 2 - 200 / 2);
+                buttonNoTimeRect.y = ((wh / 9) * 8  - 200 / 2);
+                buttonNoTimeRect.w = 200;
+                buttonNoTimeRect.h = 200;
+                
                 // поле за картите
                 fillRect2 = { 0, 0, ww, wh };
                 SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
@@ -134,6 +178,13 @@ bool Game::ttf_init(){
     SDL_Surface* player = NULL; // текст за името на играча
     SDL_Surface* playerNameImp = NULL; // името на играча
     SDL_Surface* startButton = NULL; // име на старт бутона
+    
+    
+    SDL_Surface* timeOneMinetButton = NULL; // 1 имнута
+    SDL_Surface* timeTwoMinetsButton = NULL; // 2:30 минути
+    SDL_Surface* timeFiveMinetsButton = NULL; // 5 минути
+    SDL_Surface* noTimeButton = NULL; //неограничено време
+    
     SDL_Surface* hintButton = NULL; // име на жокер бутона
     SDL_Surface* statisticButton = NULL; // име на бутона за статистиката
     SDL_Surface* resultWin = NULL; // тескт за победа
@@ -157,6 +208,23 @@ bool Game::ttf_init(){
     startButtonNameText = SDL_CreateTextureFromSurface(renderer, startButton);
     
     // сцена 2
+    // 1 минута
+    timeOneMinetButton = TTF_RenderText_Blended(fontButton, "1:00", {0, 0, 0, 0});
+    timeOneButtonNameText = SDL_CreateTextureFromSurface(renderer, timeOneMinetButton);
+    
+    // 2:30 минути
+    timeTwoMinetsButton = TTF_RenderText_Blended(fontButton, "2:30", {0, 0, 0, 0});
+    timeTwoButtonNameText = SDL_CreateTextureFromSurface(renderer, timeTwoMinetsButton);
+    
+    // 5 минути
+    timeFiveMinetsButton = TTF_RenderText_Blended(fontButton, "5:00", {0, 0, 0, 0});
+    timeFiveButtonNameText = SDL_CreateTextureFromSurface(renderer, timeFiveMinetsButton);
+    
+    // неограничено време
+    noTimeButton = TTF_RenderText_Blended(fontButton, "no time", {0, 0, 0, 0});
+    noTimeButtonNameText = SDL_CreateTextureFromSurface(renderer, noTimeButton);
+    
+    // сцена 3
     // текст за името на жокер бутона
     hintButton = TTF_RenderText_Blended(fontButton, "HINT", {0, 0, 0, 0});
     hintButtonNameText = SDL_CreateTextureFromSurface(renderer, hintButton);
@@ -165,10 +233,10 @@ bool Game::ttf_init(){
     statisticButton = TTF_RenderText_Blended(fontButton, "STATISTIC", {0, 0, 0, 0});
     statisticButtonNameText = SDL_CreateTextureFromSurface(renderer, statisticButton);
     
-    // сцена 3
+    // сцена 4
     // текст за победа
     resultWin = TTF_RenderText_Blended(fontGame, "WIN", {0, 0, 0, 0});
-    resultWinText = SDL_CreateTextureFromSurface(renderer, resultLose);
+    resultWinText = SDL_CreateTextureFromSurface(renderer, resultWin);
     
     // текст за загуба
     resultLose = TTF_RenderText_Blended(fontGame, "LOSE", {0, 0, 0, 0});
@@ -181,7 +249,7 @@ bool Game::ttf_init(){
 
     int tw, th; // големина на текста (дължина и височина)
     // сцена 1
-    // координати на теста за името на играта
+    // координати на текста за името на играта
     SDL_QueryTexture(gameNameText, 0, 0, &tw, &th);
     gameNameRect = { (ww / 2 - tw / 2), (wh / 3 - th / 2), tw, th };
 
@@ -198,6 +266,23 @@ bool Game::ttf_init(){
     startButtonNameRect = { (ww / 2 - 200 / 2) + (200 - tw) / 2, ((wh / 2) + (wh / 4) - 200 / 2) + (200 - th) / 2, tw, th };
     
     // сцена 2
+    // координати за текта на бутона за 1 минути
+    SDL_QueryTexture(timeOneButtonNameText, 0, 0, &tw, &th);
+    timeOneButtonNameRect = { (ww / 2 - tw / 2), ((wh / 9) * 2 - th / 2), tw, th };
+    
+    // координати за текта на бутона за 2:30 минути
+    SDL_QueryTexture(timeTwoButtonNameText, 0, 0, &tw, &th);
+    timeTwoButtonNameRect = { (ww / 2 - tw / 2), ((wh / 9) * 4 - th / 2), tw, th };
+    
+    // координати за текта на бутона за 5 минути
+    SDL_QueryTexture(timeFiveButtonNameText, 0, 0, &tw, &th);
+    timeFiveButtonNameRect = { (ww / 2 - tw / 2), ((wh / 9) * 6 - th / 2), tw, th };
+    
+    // координати за текста на бутона за без време
+    SDL_QueryTexture(noTimeButtonNameText, 0, 0, &tw, &th);
+    noTimeButtonNameRect = { (ww / 2 - tw / 2),((wh / 9) * 8 - th / 2), tw, th };
+    
+    // сцена 3
     // координати за текста на жокер бутона
     SDL_QueryTexture(hintButtonNameText, 0, 0, &tw, &th);
     hintButtonNameRect = { ww - (ww / 4) + (300 - tw) / 2, (wh / 9) * 2 + (200 - th) / 2, tw, th };
@@ -206,7 +291,7 @@ bool Game::ttf_init(){
     SDL_QueryTexture(statisticButtonNameText, 0, 0, &tw, &th);
     statisticButtonNameRect = { ww - (ww / 4) + (300 - tw) / 2, (wh / 3) + ((wh / 9) * 2 + (200 - th) / 2), tw, th };
     
-    // сцена 3
+    // сцена 4
     // координати за текста победа
     SDL_QueryTexture(resultWinText, 0, 0, &tw, &th);
     resultWinRect = { (ww / 2 - tw / 2), (wh / 2 - th / 2), tw, th };
@@ -263,7 +348,25 @@ void Game::render() {
             // проверяваме дали е кликант бутон за време
             if (!timeButtonsClicked){ // сцена 2
                 // бутони за различното време
+                // 1 минута
+                SDL_RenderCopy(renderer, buttonTimeOne, NULL, &buttonTimeOneRect);
+                // показване на текст "1:00"
+                SDL_RenderCopy(renderer, timeOneButtonNameText, NULL, &timeOneButtonNameRect);
                 
+                // 2:30
+                SDL_RenderCopy(renderer, buttonTimeTwo, NULL, &buttonTimeTwoRect);
+                // показване на текст "2:30"
+                SDL_RenderCopy(renderer, timeTwoButtonNameText, NULL, &timeTwoButtonNameRect);
+                
+                // 5:00
+                SDL_RenderCopy(renderer, buttonTimeFive, NULL, &buttonTimeFiveRect);
+                // показване на текст "5:00"
+                SDL_RenderCopy(renderer, timeFiveButtonNameText, NULL, &timeFiveButtonNameRect);
+                
+                // неограничено време
+                SDL_RenderCopy(renderer, buttonNoTime, NULL, &buttonNoTimeRect);
+                // показване на текст "no time"
+                SDL_RenderCopy(renderer, noTimeButtonNameText, NULL, &noTimeButtonNameRect);
                 
             }else { // сцена 3
                 // принтиране на задната страна на картите
@@ -289,6 +392,13 @@ void Game::render() {
             }
             
         }else { // сцена 4
+            
+            if (chosedTime >= time || chosedTime == 0){
+                onTime = true;
+            }
+            else {
+                onTime = false;
+            }
             
             if(onTime){ // проверяваме дали е спазено времето
                 
@@ -346,54 +456,75 @@ void Game::handleEvents() {
                         
                     } else {
                         
-                        if (!openTwoPictures){ // проверка дали са кликнати две карти
+                        if (!timeButtonsClicked){ // проверка дали е кликнат, някой от бутоните за време
                             
-                            // Проверка дали кликването е върху картата и тя е скрита
-                            for (auto it = playingCards->getPlayingDeckOfCards().begin();
-                                 it != playingCards->getPlayingDeckOfCards().end(); ++it){
-                                if (isClickableTextureClicked(it->getTexture(), &it->getRect(), msx, msy)){
-                                    it->reveal(); // откриваме картата
-                                    it->clicked(); // кликваме върху нея
-                                    
-                                    if (firstRevealedCard != nullptr){
-                                        secondRevealedCard = &(*it);
-                                        openTwoPictures = true;
-                            
-                                    } else{
-                                        firstRevealedCard = &(*it);
-                                    }
-                                    break; // намирам си картинката и спирам да въртя цикъла
-                                }
+                            if (isClickableTextureClicked(buttonTimeOne, &buttonTimeOneRect, msx, msy)) {
+                                timeButtonsClicked = true;
+                                chosedTime = 60;
                             }
-                            
-                            // проверка дали е кликнат бутонът жокер
-                            if (isClickableTextureClicked(buttonHint, &buttonHintRect, msx, msy)) {
-                                std::cout << "HINT CLICKED" << std::endl;
-                                hint = true;
-                                playingCards->printHintDeck();
+                            else if (isClickableTextureClicked(buttonTimeTwo, &buttonTimeTwoRect, msx, msy)){
+                                timeButtonsClicked = true;
+                                chosedTime = 150;
                             }
+                            else if (isClickableTextureClicked(buttonTimeFive, &buttonTimeFiveRect, msx, msy)){
+                                timeButtonsClicked = true;
+                                chosedTime = 300;
+                            }
+                            else if (isClickableTextureClicked(buttonNoTime, &buttonNoTimeRect, msx, msy)){
+                                timeButtonsClicked = true;
+                                chosedTime = 0;
+                            }
+                        }else {
                             
-                            // проверка дали е кликнат бутонът за статистика
-                            if (isClickableTextureClicked(buttonStatistic, &buttonStatisticRect, msx, msy)) {
-                                std::cout << "STATISTIC CLICKED" << std::endl;
+                            if (!openTwoPictures){ // проверка дали са кликнати две карти
                                 
-                                // създаваме нов прозорец
-                                StatisticWindow* statistic = NULL;
-                                const int WINDOW_WIDTH = 400;
-                                const int WINDOW_HEIGHT = 400;
-                                statistic = new StatisticWindow(getTime(), moves, mistakes);
-                                statistic->init("STATISTIC",
-                                    SDL_WINDOWPOS_CENTERED,
-                                    SDL_WINDOWPOS_CENTERED,
-                                    WINDOW_WIDTH, WINDOW_HEIGHT,
-                                    SDL_WINDOW_RESIZABLE);
-                                statistic->ttf_init();
-                                do{
-                                    statistic->render();
-                                    statistic->handleEvents();
-                                }while (statistic->isRunning());
+                                // Проверка дали кликването е върху картата и тя е скрита
+                                for (auto it = playingCards->getPlayingDeckOfCards().begin();
+                                     it != playingCards->getPlayingDeckOfCards().end(); ++it){
+                                    if (isClickableTextureClicked(it->getTexture(), &it->getRect(), msx, msy)){
+                                        it->reveal(); // откриваме картата
+                                        it->clicked(); // кликваме върху нея
+                                        
+                                        if (firstRevealedCard != nullptr){
+                                            secondRevealedCard = &(*it);
+                                            openTwoPictures = true;
+                                            
+                                        } else{
+                                            firstRevealedCard = &(*it);
+                                        }
+                                        break; // намирам си картинката и спирам да въртя цикъла
+                                    }
+                                }
+                                
+                                // проверка дали е кликнат бутонът жокер
+                                if (isClickableTextureClicked(buttonHint, &buttonHintRect, msx, msy)) {
+                                    std::cout << "HINT CLICKED" << std::endl;
+                                    hint = true;
+                                    playingCards->printHintDeck();
+                                }
+                                
+                                // проверка дали е кликнат бутонът за статистика
+                                if (isClickableTextureClicked(buttonStatistic, &buttonStatisticRect, msx, msy)) {
+                                    std::cout << "STATISTIC CLICKED" << std::endl;
                                     
-                                statistic->clean();
+                                    // създаваме нов прозорец
+                                    StatisticWindow* statistic = NULL;
+                                    const int WINDOW_WIDTH = 400;
+                                    const int WINDOW_HEIGHT = 400;
+                                    statistic = new StatisticWindow(getTime(), moves, mistakes);
+                                    statistic->init("STATISTIC",
+                                                    SDL_WINDOWPOS_CENTERED,
+                                                    SDL_WINDOWPOS_CENTERED,
+                                                    WINDOW_WIDTH, WINDOW_HEIGHT,
+                                                    SDL_WINDOW_RESIZABLE);
+                                    statistic->ttf_init();
+                                    do{
+                                        statistic->render();
+                                        statistic->handleEvents();
+                                    }while (statistic->isRunning());
+                                    
+                                    statistic->clean();
+                                }
                             }
                         }
                     }

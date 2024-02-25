@@ -63,6 +63,7 @@ private:
     bool onTime; // дали е спазено времето за игра
     bool hint; // проверява дали е кликнат бутона за жокер
     
+
     SDL_Texture *gameNameText; // текст за началото на играта
     SDL_Rect gameNameRect; // координати за текста
     
@@ -71,6 +72,11 @@ private:
     
     SDL_Texture *startButtonNameText, *hintButtonNameText, *statisticButtonNameText; // текст за бутоните
     SDL_Rect startButtonNameRect, hintButtonNameRect, statisticButtonNameRect; // координати на текста на бутоните
+    
+    // текст за бутоните за времето
+    SDL_Texture *timeOneButtonNameText, *timeTwoButtonNameText, *timeFiveButtonNameText, *noTimeButtonNameText;
+    // координати на текста на бутоните за времето
+    SDL_Rect timeOneButtonNameRect, timeTwoButtonNameRect, timeFiveButtonNameRect, noTimeButtonNameRect;
     
     SDL_Texture *resultWinText, *resultLoseText; // текст за победа или загуба
     SDL_Rect resultWinRect, resultLoseRect; // координати на текст за победа или загуба
@@ -83,7 +89,12 @@ private:
     SDL_Texture* buttonStart, *buttonStop, *buttonHint, *buttonStatistic; // бутони
     SDL_Rect buttonStartRect, buttonStopRect, buttonHintRect, buttonStatisticRect; // координати на бутоните
     
-    SDL_Rect fillRect1, fillRect2;
+    // бутони за времето
+    SDL_Texture* buttonTimeOne, *buttonTimeTwo, *buttonTimeFive, *buttonNoTime;
+    // координати на бутоните за времето
+    SDL_Rect buttonTimeOneRect, buttonTimeTwoRect, buttonTimeFiveRect, buttonNoTimeRect;
+    
+    SDL_Rect fillRect1, fillRect2; // правоъгълник
     
     Deck* playingCards;// тестето с карти
     int randomNumber; // размер на тестето с карти
