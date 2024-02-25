@@ -40,9 +40,15 @@ private:
     bool gameOver; // проверка дали е приключила играта
     bool onTime; // дали е спазено времето за игра
     bool hint; // проверява дали е кликнат бутона за жокер
+    bool renderText;
+    bool textInput = false;
+
     
-    SDL_Texture *gameNameText, *playerNameText; // текст за началото на играта
-    SDL_Rect gameNameRect, playerNameRect; // координати за текста
+    SDL_Texture *gameNameText; // текст за началото на играта
+    SDL_Rect gameNameRect; // координати за текста
+    
+    SDL_Texture *playerNameText, *playerNameStr; // текст за началото на играта
+    SDL_Rect playerNameRect, playerNameStrRect; // координати на текста за начало на играта
     
     SDL_Texture *startButtonNameText, *hintButtonNameText, *statisticButtonNameText; // текст за бутоните
     SDL_Rect startButtonNameRect, hintButtonNameRect, statisticButtonNameRect; // координати на текста на бутоните

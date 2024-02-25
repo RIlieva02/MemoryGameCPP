@@ -128,60 +128,87 @@ bool Game::ttf_init(){
     
     // деклариране и инициализация на текстовете
     SDL_Surface* game = NULL; // име на играта
-    SDL_Surface* player = NULL; // име на играча
+    SDL_Surface* player = NULL; // текст за името на играча
+    SDL_Surface* playerNameImp = NULL; // името на играча
     SDL_Surface* startButton = NULL; // име на старт бутона
     SDL_Surface* hintButton = NULL; // име на жокер бутона
     SDL_Surface* statisticButton = NULL; // име на бутона за статистиката
-    SDL_Surface* resultWin = NULL;
-    SDL_Surface* resultLose = NULL;
+    SDL_Surface* resultWin = NULL; // тескт за победа
+    SDL_Surface* resultLose = NULL; // текст за загуба
     
-    
+    // сцена 1
+    // текст за името на играта
     game = TTF_RenderText_Blended(fontGame, "MEMORY GAME", {0, 0, 0, 0});
     gameNameText = SDL_CreateTextureFromSurface(renderer, game);
 
+    // текст за името на играча
     player = TTF_RenderText_Blended(fontPlayer, "ENTER YOUR NAME", {0, 0, 0, 0});
     playerNameText = SDL_CreateTextureFromSurface(renderer, player);
     
+    // името на играча
+    playerNameImp = TTF_RenderText_Blended(fontPlayer, playerName.c_str(), {0, 0, 0, 0});
+    playerNameStr = SDL_CreateTextureFromSurface(renderer, playerNameImp);
+    
+    // текст за името на старт бутона
     startButton = TTF_RenderText_Blended(fontButton, "START", {0, 0, 0, 0});
     startButtonNameText = SDL_CreateTextureFromSurface(renderer, startButton);
     
+    // сцена 2
+    // текст за името на жокер бутона
     hintButton = TTF_RenderText_Blended(fontButton, "HINT", {0, 0, 0, 0});
     hintButtonNameText = SDL_CreateTextureFromSurface(renderer, hintButton);
     
+    // текст за името на бутона за статистиката
     statisticButton = TTF_RenderText_Blended(fontButton, "STATISTIC", {0, 0, 0, 0});
     statisticButtonNameText = SDL_CreateTextureFromSurface(renderer, statisticButton);
     
+    // сцена 3
+    // текст за победа
     resultWin = TTF_RenderText_Blended(fontGame, "WIN", {0, 0, 0, 0});
     resultWinText = SDL_CreateTextureFromSurface(renderer, resultLose);
     
+    // текст за загуба
     resultLose = TTF_RenderText_Blended(fontGame, "LOSE", {0, 0, 0, 0});
     resultLoseText = SDL_CreateTextureFromSurface(renderer, resultLose);
 
+    
     // позиция на текста
-    int ww, wh;
+    int ww, wh; // големина на екрана (дължина и височина)
     SDL_GetWindowSize(window, &ww, &wh);
 
-    int tw, th;
+    int tw, th; // големина на текста (дължина и височина)
+    // сцена 1
+    // координати на теста за името на играта
     SDL_QueryTexture(gameNameText, 0, 0, &tw, &th);
     gameNameRect = { (ww / 2 - tw / 2), (wh / 3 - th / 2), tw, th };
 
+    // координати за текста за името на играча
     SDL_QueryTexture(playerNameText, 0, 0, &tw, &th);
     playerNameRect = { (ww / 2 - tw / 2), (wh / 2 - th / 2), tw, th };
     
-    SDL_QueryTexture(startButtonNameText, 0, 0, &tw, &th);
-    startButtonNameRect = { (ww / 2 - 200 / 2) + (200 - tw) / 2,
-                    ((wh / 2) + (wh / 4) - 200 / 2) + (200 - th) / 2,
-                    tw, th };
+    // координати името на играча
+    SDL_QueryTexture(playerNameStr, 0, 0, &tw, &th);
+    playerNameStrRect = { (ww / 2 - tw/ 2), ((wh / 2) + (th / 2) * 2), tw, th };
     
+    // координати за теста на старт бутона
+    SDL_QueryTexture(startButtonNameText, 0, 0, &tw, &th);
+    startButtonNameRect = { (ww / 2 - 200 / 2) + (200 - tw) / 2, ((wh / 2) + (wh / 4) - 200 / 2) + (200 - th) / 2, tw, th };
+    
+    // сцена 2
+    // координати за текста на жокер бутона
     SDL_QueryTexture(hintButtonNameText, 0, 0, &tw, &th);
     hintButtonNameRect = { ww - (ww / 4) + (300 - tw) / 2, (wh / 9) * 2 + (200 - th) / 2, tw, th };
     
+    // координати за текста на бутона за статистиката
     SDL_QueryTexture(statisticButtonNameText, 0, 0, &tw, &th);
     statisticButtonNameRect = { ww - (ww / 4) + (300 - tw) / 2, (wh / 3) + ((wh / 9) * 2 + (200 - th) / 2), tw, th };
     
+    // сцена 3
+    // координати за текста победа
     SDL_QueryTexture(resultWinText, 0, 0, &tw, &th);
     resultWinRect = { (ww / 2 - tw / 2), (wh / 2 - th / 2), tw, th };
     
+    // координати за теста загъба
     SDL_QueryTexture(resultLoseText, 0, 0, &tw, &th);
     resultLoseRect = { (ww / 2 - tw / 2), (wh / 2 - th / 2), tw, th };
  
@@ -212,10 +239,12 @@ void Game::render() {
 
         // показване на името на играта
         SDL_RenderCopy(renderer, gameNameText, NULL, &gameNameRect);
-        // името на играча
+        // текст за името на играча
         SDL_RenderCopy(renderer, playerNameText, NULL, &playerNameRect);
         // показване на поле
         SDL_RenderFillRect(renderer, &fillRect1);
+        // името на играча
+        SDL_RenderCopy(renderer, playerNameStr, NULL, &playerNameStrRect);
         // показване на старт бутона
         SDL_RenderCopy(renderer, buttonStart, NULL, &buttonStartRect);
         // показване на текст "старт"
@@ -239,6 +268,7 @@ void Game::render() {
             // показване на текст "жокер"
             SDL_RenderCopy(renderer, hintButtonNameText, NULL, &hintButtonNameRect);
             
+            // проверка дали е кликнат бутона hint
             if (hint){
                 playingCards->printHintDeck();
             }
@@ -403,6 +433,21 @@ void Game::handleEvents() {
                     }
                 }
             }; break;
+            case SDL_TEXTINPUT: {
+                if (!startButtonClicked) { // Проверка дали екранът е сцена 1
+                    // Проверка дали въведеният текст се съдържа в позволените символи за име (например, само букви, цифри и интервали)
+                    if ((event.text.text[0] >= 'a' && event.text.text[0] <= 'z') ||
+                        (event.text.text[0] >= 'A' && event.text.text[0] <= 'Z') ||
+                        (event.text.text[0] >= '0' && event.text.text[0] <= '9') ||
+                        (event.text.text[0] == ' ')) {
+                        
+                        // Добавяне на въведения символ към името
+                        playerName += event.text.text[0];
+                        ttf_init(); // извикваме, за да създаде големината, шрифта и координатите на текста
+                    }
+                }
+            }; break;
+            
     
             default: break;
         }
