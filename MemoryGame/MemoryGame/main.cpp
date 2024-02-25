@@ -59,8 +59,6 @@ int main(int argc, char* argv[]) {
         return 1;
     }
     
-    
-    
     delete game;
     
     return 0;

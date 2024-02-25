@@ -177,16 +177,15 @@ bool Game::ttf_init(){
     SDL_Surface* game = NULL; // име на играта
     SDL_Surface* player = NULL; // текст за името на играча
     SDL_Surface* playerNameImp = NULL; // името на играча
+    
     SDL_Surface* startButton = NULL; // име на старт бутона
-    
-    
     SDL_Surface* timeOneMinetButton = NULL; // 1 имнута
     SDL_Surface* timeTwoMinetsButton = NULL; // 2:30 минути
     SDL_Surface* timeFiveMinetsButton = NULL; // 5 минути
     SDL_Surface* noTimeButton = NULL; //неограничено време
-    
     SDL_Surface* hintButton = NULL; // име на жокер бутона
     SDL_Surface* statisticButton = NULL; // име на бутона за статистиката
+    
     SDL_Surface* resultWin = NULL; // тескт за победа
     SDL_Surface* resultLose = NULL; // текст за загуба
     
@@ -302,8 +301,13 @@ bool Game::ttf_init(){
  
     SDL_FreeSurface(game);
     SDL_FreeSurface(player);
+    SDL_FreeSurface(playerNameImp);
     
     SDL_FreeSurface(startButton);
+    SDL_FreeSurface(timeOneMinetButton);
+    SDL_FreeSurface(timeTwoMinetsButton);
+    SDL_FreeSurface(timeFiveMinetsButton);
+    SDL_FreeSurface(noTimeButton);
     SDL_FreeSurface(hintButton);
     SDL_FreeSurface(statisticButton);
     
@@ -657,14 +661,26 @@ void Game::clean() {
     std::cout << "cleaning game\n";
     SDL_DestroyTexture(gameNameText);
     SDL_DestroyTexture(playerNameText);
+    SDL_DestroyTexture(playerNameStr);
     SDL_DestroyTexture(startButtonNameText);
+    SDL_DestroyTexture(timeOneButtonNameText);
+    SDL_DestroyTexture(timeTwoButtonNameText);
+    SDL_DestroyTexture(timeFiveButtonNameText);
+    SDL_DestroyTexture(noTimeButtonNameText);
     SDL_DestroyTexture(hintButtonNameText);
     SDL_DestroyTexture(statisticButtonNameText);
+    SDL_DestroyTexture(resultWinText);
+    SDL_DestroyTexture(resultLoseText);
     
     SDL_DestroyTexture(background);
     SDL_DestroyTexture(buttonStart);
+    SDL_DestroyTexture(buttonTimeOne);
+    SDL_DestroyTexture(buttonTimeTwo);
+    SDL_DestroyTexture(buttonTimeFive);
+    SDL_DestroyTexture(buttonNoTime);
     SDL_DestroyTexture(buttonHint);
     SDL_DestroyTexture(buttonStatistic);
+   
     
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
@@ -691,5 +707,7 @@ Game::~Game() {
     clean();
    
     delete playingCards;
+    delete firstRevealedCard;
+    delete secondRevealedCard;
 }
 

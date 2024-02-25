@@ -54,3 +54,10 @@ void Card::clicked(){
 bool Card::isClicked() const{
     return click;
 }
+
+void Card::clean() {
+    std::cout << "cleaning card\n";
+    SDL_DestroyTexture(image);
+
+    SDL_DestroyRenderer(cardRenderer);
+}

@@ -152,9 +152,13 @@ bool StatisticWindow::ttf_init(){
     // изчистване
     SDL_FreeSurface(gameName);
     SDL_FreeSurface(timeTxt);
+    SDL_FreeSurface(time);
+    SDL_FreeSurface(movesTxt);
     SDL_FreeSurface(moves);
     SDL_FreeSurface(mistakes);
+    SDL_FreeSurface(mistakesTxt);
     SDL_FreeSurface(closeButton);
+
    
     TTF_CloseFont(font);
 
@@ -248,8 +252,17 @@ void StatisticWindow::handleEvents() {
 }
 
 void StatisticWindow::clean() {
-    std::cout << "cleaning game\n";
+    std::cout << "cleaning StatisticWindow\n";
     SDL_DestroyTexture(gameNameText);
+    SDL_DestroyTexture(timeText);
+    SDL_DestroyTexture(movesInt);
+    SDL_DestroyTexture(movesText);
+    SDL_DestroyTexture(mistakesInt);
+    SDL_DestroyTexture(mistakesText);
+    SDL_DestroyTexture(buttonClose);
+    SDL_DestroyTexture(closeButtonNameText);
+    SDL_DestroyTexture(playerMoves);
+    SDL_DestroyTexture(playerMistakes);
     
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);

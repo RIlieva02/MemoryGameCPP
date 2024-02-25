@@ -24,16 +24,13 @@ public:
     void setBackCards(std::vector<Card>);
     std::vector<Card>& getBackCards();
     
-    void hideCard(int); // Метод за скриване на карта по индекс в тестето
-    void revealCard(int); // Метод за показване на карта по индекс в тестето
-    bool isCardHidden(int) const; // Метод за проверка дали карта по индекс е скрита
-    
     int generateRandomNumber();
     void startGame(int); // принтене на картите
     void shuffleDeck(); // размешване
     void printDeck(); // принтиране на тестето
     void printBackCards(); // принтиране задната страна на картите
-    void printHintDeck(); // принтираме жокер тестето
+    
+    void clean();
     
 private:
     SDL_Renderer* renderer = NULL;

@@ -10,6 +10,7 @@
 
 #include <stdio.h>
 #include <string>
+#include <iostream>
 #include <SDL2/SDL.h>
 #include <SDL2_image/SDL_image.h>
 #include <SDL2_ttf/SDL_ttf.h>
@@ -34,6 +35,8 @@ public:
     
     void clicked(); // кликваме картата
     bool isClicked() const; // показваме дали картата е кликната
+    
+    void clean();
 
 private:
     std::string id; // номер на снимка

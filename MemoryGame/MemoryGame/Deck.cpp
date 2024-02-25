@@ -283,3 +283,8 @@ void Deck::printHintDeck(){
         }
     }
 }
+void Deck::clean() {
+    std::cout << "cleaning deck\n";
+    
+    SDL_DestroyRenderer(renderer);
+}
