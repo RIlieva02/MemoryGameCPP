@@ -20,6 +20,7 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, in
           //  playingCards->getRenderer() =  SDL_CreateRenderer(window, -1, 0);
             if (renderer != 0) //renderer init success
             {
+                
                 std::cout << "renderer creation success\n";
                 SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
                 // фон на играта
@@ -84,6 +85,8 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, in
                 buttonStatisticRect.w = 300;
                 buttonStatisticRect.h = 200;
                 
+                //проверка дали е кликнат бутон за време
+                timeButtonsClicked = false;
                 // проверка дали е кликнат бутона жокер
                 hint = false;
                 // проверка дали е приключила играта
@@ -236,7 +239,7 @@ void Game::render() {
     SDL_RenderCopy(renderer, background, NULL, &backgroundRect);
     
     if (!startButtonClicked){   // сцена 1
-
+        
         // показване на името на играта
         SDL_RenderCopy(renderer, gameNameText, NULL, &gameNameRect);
         // текст за името на играча
@@ -249,37 +252,43 @@ void Game::render() {
         SDL_RenderCopy(renderer, buttonStart, NULL, &buttonStartRect);
         // показване на текст "старт"
         SDL_RenderCopy(renderer, startButtonNameText, NULL, &startButtonNameRect);
-        
-    
-    } else{ // сцена 2
+
+    } else{ // сцена 2, 3 и 4
       
         // пред поле
         SDL_RenderFillRect(renderer, &fillRect2);
         
         if (!gameOver){ // проверяваме дали играта е приключила
             
-            // принтиране на задната страна на картите
-            playingCards->printBackCards();
-            
-            // принтене на картите
-            playingCards->printDeck();
-            
-            // бутон за жокер
-            SDL_RenderCopy(renderer, buttonHint, NULL, &buttonHintRect);
-            // показване на текст "жокер"
-            SDL_RenderCopy(renderer, hintButtonNameText, NULL, &hintButtonNameRect);
-            
-            // проверка дали е кликнат бутона hint
-            if (hint){
-                playingCards->printHintDeck();
+            // проверяваме дали е кликант бутон за време
+            if (!timeButtonsClicked){ // сцена 2
+                // бутони за различното време
+                
+                
+            }else { // сцена 3
+                // принтиране на задната страна на картите
+                playingCards->printBackCards();
+                
+                // принтене на картите
+                playingCards->printDeck();
+                
+                // бутон за жокер
+                SDL_RenderCopy(renderer, buttonHint, NULL, &buttonHintRect);
+                // показване на текст "жокер"
+                SDL_RenderCopy(renderer, hintButtonNameText, NULL, &hintButtonNameRect);
+                
+                // проверка дали е кликнат бутона hint
+                if (hint){
+                    playingCards->printHintDeck();
+                }
+                
+                // бутон за статистика
+                SDL_RenderCopy(renderer, buttonStatistic, NULL, &buttonStatisticRect);
+                // показване на текст "статистика"
+                SDL_RenderCopy(renderer, statisticButtonNameText, NULL, &statisticButtonNameRect);
             }
             
-            // бутон за статистика
-            SDL_RenderCopy(renderer, buttonStatistic, NULL, &buttonStatisticRect);
-            // показване на текст "статистика"
-            SDL_RenderCopy(renderer, statisticButtonNameText, NULL, &statisticButtonNameRect);
-            
-        }else {
+        }else { // сцена 4
             
             if(onTime){ // проверяваме дали е спазено времето
                 
@@ -291,11 +300,6 @@ void Game::render() {
                 SDL_RenderCopy(renderer, resultLoseText, NULL, &resultLoseRect);
             }
             
-            // показване на старт бутона
-            SDL_RenderCopy(renderer, buttonStart, NULL, &buttonStartRect);
-            
-            // показване на текст "нова игра"
-            SDL_RenderCopy(renderer, startButtonNameText, NULL, &startButtonNameRect);
         }
             
     }
@@ -446,6 +450,7 @@ void Game::handleEvents() {
                         // добавяме въведения символ към името
                         playerName += event.text.text[0];
                         ttf_init(); // извикваме, за да създаде големината, шрифта и координатите на текста
+                        
                     }
                 }
             }; break;
@@ -481,6 +486,39 @@ void Game::isGameOver(){
         gameOver = true;
     }
     
+}
+
+void Game::setPlayerName(std::string name){
+    this->playerName = name;
+}
+std::string Game::getPlayerName(){
+    return this->playerName;
+}
+void Game::setMoves(int moves){
+    this->moves = moves;
+}
+int Game::getMoves(){
+    return this->moves;
+}
+void Game::setMistakes(int mistakes){
+    this->mistakes = mistakes;
+}
+int Game::getMistakes(){
+    return this->mistakes;
+}
+void Game::setRandomNumber(int randomNum){
+    this->randomNumber = randomNum;
+}
+int Game::getRandomNumber(){
+    return this->randomNumber;
+}
+bool Game::getResult(){
+    if (onTime){
+        return true; // 1
+    }
+    else {
+        return false; // 0
+    }
 }
 
 // изчистваме SDL

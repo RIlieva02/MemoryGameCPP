@@ -12,6 +12,8 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include "pugixml.hpp"
+#include "pugiconfig.hpp"
 #include "Deck.hpp"
 #include "StatisticWindow.hpp"
 
@@ -19,6 +21,17 @@ class Game {
 public:
     Game();
     ~Game();
+    
+    void setPlayerName(std::string);
+    std::string getPlayerName();
+    void setMoves(int);
+    int getMoves();
+    void setMistakes(int);
+    int getMistakes();
+    void setRandomNumber(int);
+    int getRandomNumber();
+    bool getResult();
+    
     bool init(const char* title, int xpos, int ypos, int width, int height, int flags);
     bool ttf_init();
     void render();
@@ -42,6 +55,7 @@ private:
     
     bool running; // проверка дали играта продължава
     bool startButtonClicked; // проверка дали е кликнат старт бутона
+    bool timeButtonsClicked; // проверка дали е кликнат бутон за време
     bool hintButtonClicked; // проверка дали е кликнат жокер бутона
     bool statisticButtonClicked; // проверка дали е кликнат бутона за статистиката
     bool openTwoPictures; // проверка дали са отворени два бутона
@@ -81,6 +95,7 @@ private:
     
     // Таймер
     float time; // изминалото време в секунди
+    int chosedTime; // избрано време от играча
 
 };
 #endif /* Game_hpp */

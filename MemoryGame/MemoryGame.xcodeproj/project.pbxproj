@@ -15,6 +15,7 @@
 		81F050A82B8B34FC00EE75AD /* SDL2_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 81F050A72B8B34FC00EE75AD /* SDL2_image.framework */; };
 		81F050AA2B8B350500EE75AD /* SDL2_ttf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 81F050A92B8B350500EE75AD /* SDL2_ttf.framework */; };
 		81F050AD2B8B35FC00EE75AD /* StatisticWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 81F050AB2B8B35FC00EE75AD /* StatisticWindow.cpp */; };
+		81F050B42B8BBF8600EE75AD /* pugixml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 81F050B32B8BBF8600EE75AD /* pugixml.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -43,6 +44,10 @@
 		81F050A92B8B350500EE75AD /* SDL2_ttf.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_ttf.framework; path = ../../../../../Library/Frameworks/SDL2_ttf.framework; sourceTree = "<group>"; };
 		81F050AB2B8B35FC00EE75AD /* StatisticWindow.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = StatisticWindow.cpp; sourceTree = "<group>"; };
 		81F050AC2B8B35FC00EE75AD /* StatisticWindow.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = StatisticWindow.hpp; sourceTree = "<group>"; };
+		81F050B12B8BBEE600EE75AD /* records.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = records.xml; sourceTree = "<group>"; };
+		81F050B22B8BBF8000EE75AD /* pugiconfig.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = pugiconfig.hpp; path = pugi/pugiconfig.hpp; sourceTree = "<group>"; };
+		81F050B32B8BBF8600EE75AD /* pugixml.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = pugixml.cpp; path = pugi/pugixml.cpp; sourceTree = "<group>"; };
+		81F050B52B8BBF8D00EE75AD /* pugixml.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = pugixml.hpp; path = pugi/pugixml.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +67,9 @@
 		8199E8EF2B84DCBD00D0F491 = {
 			isa = PBXGroup;
 			children = (
+				81F050B52B8BBF8D00EE75AD /* pugixml.hpp */,
+				81F050B32B8BBF8600EE75AD /* pugixml.cpp */,
+				81F050B22B8BBF8000EE75AD /* pugiconfig.hpp */,
 				8199E8FA2B84DCBD00D0F491 /* MemoryGame */,
 				8199E8F92B84DCBD00D0F491 /* Products */,
 				8199E9022B84DCCB00D0F491 /* Frameworks */,
@@ -79,6 +87,7 @@
 		8199E8FA2B84DCBD00D0F491 /* MemoryGame */ = {
 			isa = PBXGroup;
 			children = (
+				81F050B12B8BBEE600EE75AD /* records.xml */,
 				81F050AB2B8B35FC00EE75AD /* StatisticWindow.cpp */,
 				81F050AC2B8B35FC00EE75AD /* StatisticWindow.hpp */,
 				811AB60A2B86338D000F1B0C /* Deck.cpp */,
@@ -159,6 +168,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				81F050B42B8BBF8600EE75AD /* pugixml.cpp in Sources */,
 				81F050AD2B8B35FC00EE75AD /* StatisticWindow.cpp in Sources */,
 				811AB60C2B86338D000F1B0C /* Deck.cpp in Sources */,
 				8199E8FC2B84DCBD00D0F491 /* main.cpp in Sources */,
